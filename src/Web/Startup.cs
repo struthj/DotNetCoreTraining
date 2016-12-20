@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Dal;
+using Microsoft.EntityFrameworkCore;
 
 namespace Web
 {
@@ -29,6 +31,8 @@ namespace Web
         {
             // Add framework services.
             services.AddMvc();
+            var Db = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<BusinessProContext>(options => options.UseSqlite(Db));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
