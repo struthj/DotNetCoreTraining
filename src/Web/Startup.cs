@@ -30,9 +30,9 @@ namespace Web
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+            services.AddDbContext<BusinessProContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc();
-            var Db = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<BusinessProContext>(options => options.UseSqlite(Db));
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +45,7 @@ namespace Web
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
+                app.UseStatusCodePages();
             }
             else
             {

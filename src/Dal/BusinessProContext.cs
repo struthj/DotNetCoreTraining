@@ -9,14 +9,15 @@ namespace Dal
 {
     public class BusinessProContext : DbContext
     {
+        public BusinessProContext(DbContextOptions<BusinessProContext> options) : base(options) { }
+       
+        //TODO: Add Models here
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Role> Roles { get; set; }
 
-        public BusinessProContext(DbContextOptions<BusinessProContext> options)
-        : base(options)
-    { }
+       
 
         //ManytoMany for PersonRole class
         protected override void OnModelCreating(ModelBuilder modelBuilder)
