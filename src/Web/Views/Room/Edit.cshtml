@@ -5,7 +5,7 @@
 @Html.Label("Department")
 
 @Html.DropDownList("DepartmentId", (IEnumerable<SelectListItem>)ViewBag.DepartmentList, "")
-<input type="button" value="Send"  onclick="createDept(ViewBag.DepartmentList.SelectedValue)"/> 
+<input type="button" value="Send"  onclick="createDept()"/> 
 
 
 
@@ -51,20 +51,21 @@
     </div>
 
 <script>
-    function createDept(selectedValue) {
+    function createDept() {
         var url = '@Url.Action("CreateDepartment", "Room")';
         //get the selected value
-        @*var selectedValue = @ViewBag.DepartmentList.Where(item => item.Selected).FirstOrDefault();*@
+        var selectedValue = document.getElementById("DepartmentId").value;
+        console.log(selectedValue + "str");
         data = {roomId: @Model.Id, deptId: selectedValue};
 
         $.ajax({
-            //url: "/ControllerName/ActionName",
-        url: url,
-        type: "POST",
-        data: data,
-        success: function (data) {
-            alert(data)
+            url: url,
+            type: "GET",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            data: data,
+            success: function (data) {
+                alert(data);
             }
-        })
+        });
     }
 </script>

@@ -87,6 +87,7 @@ namespace Web.Controllers
                 return BadRequest();
             }
             Room room = _context.Rooms.Find(id);
+            _context.Entry(room).Collection(i => i.Departments).Load();
             if (room == null)
             {
                 return BadRequest();

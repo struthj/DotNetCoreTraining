@@ -28,14 +28,17 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
 
-    @*@if (Model.Departments != null)
-    {*@
-        @foreach (var item in Model.Departments)
-        {
+</dl>
+    <table class="table">
+
+        @if (Model.Departments != null)
+            {
+            @foreach (var item in Model.Departments)
+                {
                 @Html.Partial("_DepartmentRow", item)
+            }
         }
-    @*}*@
-    </dl>
+    </table>
 </div>
 <p>
     @*@Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |*@
