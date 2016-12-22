@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace Dal.Models
 {
-    public class Room
+    public class DepartmentViewModel
     {
         public int Id { get; set; }
-
-        //Data Validation
-        [StringLength(60, MinimumLength = 3)]
         public string Name { get; set; }
 
-        public List<Department> Departments { get; set; }
     }
 }

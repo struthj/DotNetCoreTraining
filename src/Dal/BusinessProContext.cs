@@ -15,9 +15,7 @@ namespace Dal
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Person> People { get; set; }
-        public DbSet<Role> Roles { get; set; }
-
-       
+        public DbSet<Role> Roles { get; set; }       
 
         //ManytoMany for PersonRole class
         protected override void OnModelCreating(ModelBuilder modelBuilder)
