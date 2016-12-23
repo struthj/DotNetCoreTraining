@@ -9,7 +9,7 @@ namespace Dal.Models
     {
         //Id's
         public int PersonId { get; set; }
-        public string RoleId { get; set; }
+        public int RoleId { get; set; }
 
         //ManyToMany
         public Role Role { get; set; }

@@ -51,7 +51,7 @@ namespace Dal.Migrations
                 {
                     b.Property<int>("PersonId");
 
-                    b.Property<string>("RoleId");
+                    b.Property<int>("RoleId");
 
                     b.HasKey("PersonId", "RoleId");
 
@@ -62,8 +62,10 @@ namespace Dal.Migrations
 
             modelBuilder.Entity("Dal.Models.Role", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
@@ -75,7 +77,8 @@ namespace Dal.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasMaxLength(60);
 
                     b.HasKey("Id");
 

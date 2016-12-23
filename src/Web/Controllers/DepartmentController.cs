@@ -9,24 +9,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging;
 
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Web.Controllers
 {
-    public class RoomController : Controller
+    public class DepartmentController : Controller
     {
         private readonly BusinessProContext _context;
-        public RoomController(BusinessProContext context)
+        public DepartmentController(BusinessProContext context)
         {
             _context = context;
         }
+
         // GET: /<controller>/
         public IActionResult Index()
         {
-            var items = _context.Rooms;
-
+            var items = _context.Departments;
             return View(items.ToList());
         }
+
 
         public IActionResult Create()
         {
@@ -35,16 +34,16 @@ namespace Web.Controllers
         //POST Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Room Room)
+        public IActionResult Create(Department department)
         {
             if (ModelState.IsValid)
             {
-                _context.Rooms.Add(Room);
+                _context.Departments.Add(department);
                 _context.SaveChanges();
-                return RedirectToAction(nameof(Edit), new { id = Room.Id });
+                return RedirectToAction(nameof(Edit), new { id = department.Id });
 
             }
-            return View(Room);
+            return View();
         }
 
         // GET: Rooms/Edit/5
@@ -54,30 +53,49 @@ namespace Web.Controllers
             {
                 return BadRequest();
             }
-            Room room = _context.Rooms.Find(id);
-            if (room == null)
+            Department department = _context.Departments.Find(id);
+            if (department == null)
             {
                 return BadRequest();
             }
-            ViewBag.DepartmentList = new SelectList(_context.Departments.ToList(), "Id", "Name");
+            ViewBag.RoomList = new SelectList(_context.Rooms.ToList(), "Id", "Name");
 
-            return View(room);
+            return View(department);
         }
 
         [HttpPost]
-        public IActionResult Edit(Room room)
+        public IActionResult Edit(Department department)
         {
             if (ModelState.IsValid)
             {
-                _context.Entry(room.Departments).State = EntityState.Modified;
-
+                _context.Entry(department).State = EntityState.Modified;
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.DepartmentList = new SelectList(_context.Departments.ToList(), "Id", "Name");
-            return View(room);
+            ViewBag.RoomList = new SelectList(_context.Rooms.ToList(), "Id", "Name");
+            return View(department);
         }
 
+        //Department/AddRoom
+        //To add department to room
+        public IActionResult AddRoom(int? deptId, int? roomId)
+        {
+            Room room = _context.Rooms.Find(roomId);
+            Department department = _context.Departments.Find(deptId);
+            _context.Entry(room).Collection(i => i.Departments).Load();
+            if (room.Departments == null)
+            {
+                room.Departments = new List<Department>();
+            }
+            room.Departments.Add(department);
+            if (ModelState.IsValid)
+            {
+                _context.Entry(room).State = EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(department);
+        }
 
         // GET: Rooms/Details/5
         public IActionResult Details(int? id)
@@ -86,37 +104,12 @@ namespace Web.Controllers
             {
                 return BadRequest();
             }
-            Room room = _context.Rooms.Find(id);
-            _context.Entry(room).Collection(i => i.Departments).Load();
-            if (room == null)
+            Department department = _context.Departments.Find(id);
+            if (department == null)
             {
                 return BadRequest();
             }
-
-            return View(room);
-        }
-
-        //Room/CreateDepartment
-        //To create department
-        public IActionResult CreateDepartment(int roomId, int deptId)
-        {
-            Room room = _context.Rooms.Find(roomId);
-            Department department = _context.Departments.Find(deptId);
-
-            if (room.Departments == null)
-            {
-                room.Departments = new List<Department>();
-            }
-            room.Departments.Add(department);
-
-            if (ModelState.IsValid)
-            {
-                _context.Entry(room).State = EntityState.Modified;
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(room);
-
+            return View(department);
         }
     }
 }

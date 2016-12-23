@@ -7,7 +7,8 @@ namespace Dal.Models
 {
     public class Role
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
         //ManytoMany
         public List<PersonRole> PersonRole { get; set; }
 

@@ -8,8 +8,8 @@ using Dal;
 namespace Dal.Migrations
 {
     [DbContext(typeof(BusinessProContext))]
-    [Migration("20161219233845_migration_v2")]
-    partial class migration_v2
+    [Migration("20161222225103_migration_v1")]
+    partial class migration_v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,7 +52,7 @@ namespace Dal.Migrations
                 {
                     b.Property<int>("PersonId");
 
-                    b.Property<string>("RoleId");
+                    b.Property<int>("RoleId");
 
                     b.HasKey("PersonId", "RoleId");
 
@@ -63,8 +63,10 @@ namespace Dal.Migrations
 
             modelBuilder.Entity("Dal.Models.Role", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
@@ -76,7 +78,8 @@ namespace Dal.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasMaxLength(60);
 
                     b.HasKey("Id");
 

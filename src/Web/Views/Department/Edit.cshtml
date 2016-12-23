@@ -1,11 +1,11 @@
 ﻿@using Dal.Models
 
-@model Room
+@model Department
 
-@Html.Label("Department")
+@Html.Label("Rooms")
 
-@Html.DropDownList("DepartmentId", (IEnumerable<SelectListItem>)ViewBag.DepartmentList, "")
-<input type="button" value="Send"  onclick="createDept()"/> 
+@Html.DropDownList("RoomId", (IEnumerable<SelectListItem>)ViewBag.RoomList, "")
+<input type="button" value="Send" onclick="addRoom()" />
 
 
 
@@ -34,38 +34,24 @@
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
-
-        <th>Departments</th>
-    </tr>
-    
-    @if (Model.Departments != null)
-    {
-        foreach (var item in Model.Departments)
-        {
-            @Html.Partial("_DepartmentRow", item)
-        }
-    }
 </table>
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
 
 <script>
-    function createDept() {
-        var url = '@Url.Action("CreateDepartment", "Room")';
+    function addRoom() {
+        var url = '@Url.Action("AddRoom", "Department")';
         //get the selected value
-        var selectedValue = document.getElementById("DepartmentId").value;
-        console.log(selectedValue + "str");
-        data = {roomId: @Model.Id, deptId: selectedValue};
+        var selectedValue = document.getElementById("RoomId").value;
+        data = {deptId: @Model.Id, roomId: selectedValue};
 
         $.ajax({
             url: url,
             type: "GET",
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             data: data,
-            success: function (data) {
-                alert(data);
-            }
+            success: function (data) {}
         });
     }
 </script>
