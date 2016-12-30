@@ -45,6 +45,7 @@ namespace Web.Controllers
             }
             return View(role);
         }
+
         // GET: Rooms/Edit/5
         public IActionResult Edit(int? id)
         {
@@ -75,8 +76,8 @@ namespace Web.Controllers
             return View(role);
         }
 
-        //Department/AddPerson
-        //To add department to room
+        //Role/AddPerson
+        //To add Person to Role
         public IActionResult AddPerson(int? roleId, int? personId)
         {
             if(roleId == null || personId == null)
@@ -112,7 +113,7 @@ namespace Web.Controllers
             {
                 _context.Entry(role).State = EntityState.Modified;
                 _context.Entry(person).State = EntityState.Modified;
-                _context.Entry(personRole).State = EntityState.Modified;
+                _context.Add(personRole);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
@@ -127,13 +128,11 @@ namespace Web.Controllers
                 return BadRequest();
             }
             Role role = _context.Roles.Find(id);
-            _context.Entry(role).Collection(i => i.PersonRole).Load();
-            //Left off Here 
+
+            _context.Entry(role).Collection(i => i.PersonRole).Load(); 
             foreach(PersonRole pr in role.PersonRole){
-                //_context.Entry(pr).Collection(i => i.Person).Load();
+                pr.Person = _context.People.Find(pr.PersonId);
             };
-           
-            //role.PersonRole = _context
             if (role == null || role.PersonRole == null)
             {
                 return BadRequest();

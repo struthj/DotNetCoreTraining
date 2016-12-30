@@ -1,11 +1,11 @@
 ﻿@using Dal.Models
 
-@model Department
+@model Person
 
-@Html.Label("Rooms")
+@Html.Label("Roles")
 
-@Html.DropDownList("RoomId", (IEnumerable<SelectListItem>)ViewBag.RoomList, "")
-<input type="button" value="Send" onclick="addRoom()" />
+@Html.DropDownList("RoleId", (IEnumerable<SelectListItem>)ViewBag.RoleList, "")
+<input type="button" value="Send" onclick="AddRole()" />
 
 
 
@@ -42,11 +42,11 @@
 </div>
 
 <script>
-    function addRoom() {
-        var url = '@Url.Action("AddRoom", "Department")';
+    function AddRole() {
+        var url = '@Url.Action("AddRole", "Person")';
         //get the selected value
-        var selectedValue = document.getElementById("RoomId").value;
-        data = {deptId: @Model.Id, roomId: selectedValue};
+        var selectedValue = document.getElementById("RoleId").value;
+        data = {roleId: @Model.Id, roleId: selectedValue};
 
         $.ajax({
             url: url,

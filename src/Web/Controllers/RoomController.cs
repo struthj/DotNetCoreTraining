@@ -60,7 +60,6 @@ namespace Web.Controllers
                 return BadRequest();
             }
             ViewBag.DepartmentList = new SelectList(_context.Departments.ToList(), "Id", "Name");
-
             return View(room);
         }
 
@@ -69,7 +68,7 @@ namespace Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Entry(room.Departments).State = EntityState.Modified;
+                _context.Entry(room).State = EntityState.Modified;
 
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
@@ -87,7 +86,10 @@ namespace Web.Controllers
                 return BadRequest();
             }
             Room room = _context.Rooms.Find(id);
+            //Left off here check if Room.Departments is null before loading to avoid exception
             _context.Entry(room).Collection(i => i.Departments).Load();
+          
+           
             if (room == null)
             {
                 return BadRequest();
@@ -116,7 +118,34 @@ namespace Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(room);
-
         }
+
+        // GET: Room/Delete/5
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            Room room = _context.Rooms.Find(id);
+            if (room == null)
+            {
+                return BadRequest();
+            }
+            return View(room);
+        }
+
+        // POST: Room/Delete/5
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            Room room = _context.Rooms.Find(id);
+            _context.Entry(room).Collection(i => i.Departments).Load();
+            _context.Rooms.Remove(room);
+            _context.Entry(room).State = EntityState.Deleted;
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
